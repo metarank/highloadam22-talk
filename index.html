@@ -21,7 +21,7 @@
 					<h1>Metarank:</h1>
 					<h3>Building an open-source online LTR engine</h3>
 					<br>
-					<p><small>Haystack EU, 2022</small></p>
+					<p><small>Grebennikov Roman | Haystack EU, 2022</small></p>
 				</section>
     			<section>
 					<h2>This is me</h2>
@@ -62,36 +62,36 @@
 				<section>
 					<img src="img/chopper1.jpg" height="400px"/>
 					<p><ul>
-						<li>A low-hanging fruit, existing tooling</li>
-						<li>poke - a/b test - poke - a/b test</li>
+						<li class="fragment">A low-hanging fruit, existing tooling</li>
+						<li class="fragment">poke - a/b test - poke - a/b test</li>
 					</ul></p>
 				</section>
 				<section>
 					<img src="img/chopper2.jpg" height="400px"/>
 					<p><ul>
-						<li>Iterative a/b tests take a lot of time</li>
-						<li>More weights = more problems</li>
+						<li class="fragment">Iterative a/b tests take a lot of time</li>
+						<li class="fragment">More weights = more problems</li>
 					</ul></p>
 				</section>
 				<section>
 					<img src="img/chopper3.jpg" height="400px"/>
 					<p><ul>
-						<li>Learn-to-rank needs a myriad of MLops things</li>
-						<li>Long project, no experience, no tooling = high risk</li>
+						<li class="fragment">Learn-to-rank needs a myriad of MLops things</li>
+						<li class="fragment">Long project, no experience, no tooling = high risk</li>
 					</ul></p>
 				</section>
 				<section>
 					<img src="img/chopper4.jpg" height="400px"/>
 					<p><ul>
-						<li>BM25 * CTR = quick feedback</li>
-						<li>LTR = <span><img src="img/think.png" height="40px" style="margin: 0;"></span></li>
+						<li class="fragment">BM25 * CTR = quick feedback</li>
+						<li class="fragment">LTR = <span><img src="img/think.png" height="40px" style="margin: 0;"></span></li>
 					</ul></p>
 				</section>
 				<section>
 					<img src="img/chopper5c.jpg" height="400px"/>
 					<ul>
-						<li>BERT, HNSWlib &amp; FAISS are 2018</li>
-						<li>Existing tooling made it approachable</li>
+						<li class="fragment">BERT, HNSWlib &amp; FAISS are 2018</li>
+						<li class="fragment">Existing tooling made it approachable</li>
 					</ul>
 				</section>
 				<section>
@@ -250,7 +250,7 @@
   ],
 }					</code></pre>
 					<ul>
-						<li class="fragment">Multiple interaction types: clicks/carts/purchases</li>
+						<li class="fragment">Multiple interaction types: likes/clicks/purchases</li>
 						<li class="fragment">Must include reference to a parent ranking event</li>
 					</ul>
 				</section>
@@ -271,7 +271,7 @@
 					<h2>Feature extractors: basic</h2>
 					<pre class="yaml"><code data-noescape style="max-height: 800px;">
 // take a value from item metadata
-- name: price
+- name: budget
   type: number
   scope: item
   source: item.budget
@@ -282,7 +282,7 @@
 					<h2>Feature extractors: basic</h2>
 					<pre  class="yaml"><code data-noescape style="max-height: 800px;">
 // one-hot/label encode a string
-- name: color
+- name: genre
   type: string
   scope: item
   source: item.genre
@@ -331,6 +331,33 @@
   bucket_size: 24h         // make a counter for each 24h rolling window
   windows: [7, 14, 30, 60] // on each refresh, aggregate to 1-2-4-8 week counts
   refresh: 1h
+					</code></pre>
+				</section>
+				<section>
+					<h2>Rates: CTR &amp; Conversion</h2>
+					<pre class="yaml"><code data-noescape  style="max-height: 800px;">
+// Click-through rate 
+- name: CTR
+  type: rate
+  top: click      // divide number of clicks
+  bottom: impression // to number of examine events
+  scope: item
+  bucket: 24h     // aggregate over 24-hour buckets
+  periods: [7, 14, 30, 60] // sum buckets for multiple time ranges
+					</code></pre>
+					<ul class="fragment"><li>Rate normalization: 1 click + 2 impressions != CTR 50%</li></ul>
+				</section>
+				<section>
+					<h2>Profiling</h2>
+					<pre class="yaml"><code data-noescape  style="max-height: 800px;">
+// Does this user had an interaction before 
+// with other item with the same field value?
+
+- name: clicked_color
+  type: interacted_with
+  interaction: click
+  field: metadata.color
+  scope: user
 					</code></pre>
 				</section>
 				<section>
@@ -388,7 +415,8 @@
 					<h2>[not only] reranking</h2>
 					<p><img src="img/reranking.png" height="350px"/></p>
 					<ul>
-						<li><b>soon:</b> recommendations retrieval</li>
+						<li class="fragment"><b>soon:</b> recommendations retrieval (MF/BPR/ALS)</li>
+						<li class="fragment"><b>soon:</b> merchandising</li>
 					</ul>
 				</section>
 				<section>
