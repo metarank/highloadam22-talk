@@ -1,0 +1,469 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Building an open-source online Learn-to-rank engine</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css">
+
+		<!-- Theme used for syntax highlighted code xx -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<img src="img/metarank-logo.svg" height="170px">
+					<h1>Metarank:</h1>
+					<h3>Building an open-source online LTR engine</h3>
+					<br>
+					<p><small>Haystack EU, 2022</small></p>
+				</section>
+    			<section>
+					<h2>This is me</h2>
+					<img src="img/screaming_sun.png" height="300px">
+					<ul>
+						<li class="fragment">Long ago: PhD in CS, quant trading, credit scoring</li>
+						<li class="fragment">Past: Search &amp; personalization for ~7 years</li>
+						<li class="fragment">Now: <s>Unemployed</s> Full-time open-source contributor</li>
+					</ul>
+				</section>
+				<section>
+					<h1>RANKING</h1>
+				</section>
+				<section>
+					<h2>Not [only] about search</h2>
+					<table>
+						<tr>
+							<td><video data-autoplay src="img/scroll.mp4" height="600px"></video></td>
+							<td><video data-autoplay src="img/scroll2.mp4" height="600px"></video></td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Not [only] about e-commerce</h2>
+					<video data-autoplay src="img/rank-cats.mp4" height="500px"></video>
+				</section>
+
+				<section>
+					<h2>Not [only] static</h2>
+					<video data-autoplay src="img/rank-news.mp4" height="500px"></video>
+				</section>
+
+				<section>
+					<h2>Learn-to-rank, again?</h2>
+					<!--p><img src="img/same.jpg" height="300px"></p-->
+				</section>
+
+				<section>
+					<img src="img/chopper1.jpg" height="400px"/>
+					<p><ul>
+						<li>A low-hanging fruit, existing tooling</li>
+						<li>poke - a/b test - poke - a/b test</li>
+					</ul></p>
+				</section>
+				<section>
+					<img src="img/chopper2.jpg" height="400px"/>
+					<p><ul>
+						<li>Iterative a/b tests take a lot of time</li>
+						<li>More weights = more problems</li>
+					</ul></p>
+				</section>
+				<section>
+					<img src="img/chopper3.jpg" height="400px"/>
+					<p><ul>
+						<li>Learn-to-rank needs a myriad of MLops things</li>
+						<li>Long project, no experience, no tooling = high risk</li>
+					</ul></p>
+				</section>
+				<section>
+					<img src="img/chopper4.jpg" height="400px"/>
+					<p><ul>
+						<li>BM25 * CTR = quick feedback</li>
+						<li>LTR = <span><img src="img/think.png" height="40px" style="margin: 0;"></span></li>
+					</ul></p>
+				</section>
+				<section>
+					<img src="img/chopper5c.jpg" height="400px"/>
+					<ul>
+						<li>BERT, HNSWlib &amp; FAISS are 2018</li>
+						<li>Existing tooling made it approachable</li>
+					</ul>
+				</section>
+				<section>
+					<h2>LTR: a high risk investment</h2>
+					<img src="img/esltr.jpg" height="350px"/>
+					<ul>
+						<li>team: ML/MLops experience</li>
+						<li>time: 6+ months, not guaranteed to succeed</li>
+						<li class="fragment highlight-green">tooling: custom, in-house</li>
+					</ul>
+				</section>
+				<section>
+					<p><img src="img/google.png" height="500px"/></p>
+				</section>
+				<section>
+					<p><img src="img/google-es-ltr.png" height="500px"/></p>
+				</section>
+				<section>
+					<h2>Are my ranking factors unique?</h2>
+					<p><img src="/img/ctr-sun.png" height="300px"/></p>
+					<ul>
+						<li>UA, Referer, GeoIP</li>
+						<li>query-field matching, item metadata</li>
+						<li>counters, CTR, visitor profile</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Is my data setup unique?</h2>
+					<ul>
+						<li>data model: clicks, impressions, metadata</li>
+						<li>feature engineering: compute and logging</li>
+						<li>feature store: judgement lists, history replay, bootstrap</li>
+						<li>typical LTR ML models: LambdaMART</li>
+					</ul>
+				</section>
+				<section>
+					<p><img src="img/rainbow.png" height="500px"/></p>
+					<ul>
+						<li>cover 90% typical tasks in 10% time?</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Metarank</h1>
+					<p>a swiss army knife of re-ranking</p>
+					<img src="img/metarank-mvp.png" height="400px">
+				</section>
+				<section>
+					<h2>A secondary re-ranker</h2>
+					<img src="img/reranking.png" height="350px"/>
+				</section>
+				<section>
+					<h2>Inside Metarank</h2>
+					<img src="img/metarank-magic.png"/>
+				</section>
+				<section>
+					<h2>Inside Metarank</h2>
+					<img src="img/metarank-diag.png">
+				</section>
+
+				<section>
+					<h2>Open Source</h2>
+					<img src="img/github.png" height="400px">
+					<ul>
+						<li>Apache2 licensed, no strings attached</li>
+						<li>Single jar file, can run locally</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Taking off</h2>
+					<img src="img/metarank-diag.png" height="300px">
+					<ol>
+						<li class="fragment">Import historical events: S3, HTTP, files</li>
+						<li class="fragment">Train: LambdaMART @ XGBoost &amp; LightGBM</li>
+						<li class="fragment">Inference: API, Redis as backend</li>
+					</ol>
+				</section>
+				<section>
+					<h2>Data model</h2>
+					<p>Inspired by GCP Retail Events, Segment.io Ecom Spec:<br><br></p>
+					<ul>
+						<li class="fragment">
+							<b>Metadata</b>: visitor/item specific info
+							<ul><li>item price, tags, visitor profile</li></ul>
+						</li>
+						<li class="fragment">
+							<b>Impression</b>: visitor viewed an item list
+							<ul><li>search results, collection, rec widget</li></ul>
+						</li>
+						<li class="fragment">
+							<b>Interaction</b>: visitor acted on an item from the list
+							<ul><li>click, add-to-cart, mouse hover</li></ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Document metadata example</h2>
+					<pre class="json"><code data-trim data-noescape>
+{
+  "event": "item",
+  "id": "81f46c34-a4bb-469c-8708-f8127cd67d27",
+  "item": "product1",
+  "timestamp": "1599391467000",
+  "fields": [
+    {"name": "title", "value": "Nice jeans"},
+    {"name": "price", "value": 25.0},
+    {"name": "color", "value": ["blue", "black"]},
+    {"name": "availability", "value": true}
+  ]
+}
+					</code></pre>
+					<ul>
+						<li class="fragment">Unique event id, item id and timestamp</li>
+						<li class="fragment">Optional document fields</li>
+						<li class="fragment">Partial updates are OK</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Ranking event example</h2>
+					<pre class="json"><code data-trim data-noescape>
+{
+  "event": "ranking",
+  "id": "81f46c34-a4bb-469c-8708-f8127cd67d27",
+  "timestamp": "1599391467000",
+  "user": "user1",
+  "session": "session1",
+  "fields": [
+      {"name": "query", "value": "socks"}
+  ],
+  "items": [
+    {"id": "item3", "relevancy":  2.0},
+    {"id": "item1", "relevancy":  1.0},
+    {"id": "item2", "relevancy":  0.5} 
+  ]
+}
+					</code></pre>
+					<ul>
+						<li class="fragment">User &amp; session fields</li>
+						<li class="fragment">Which items were displayed, BM25 score</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Interaction event example</h2>
+					<pre class="json"><code data-trim data-noescape>
+{
+  "event": "interaction",
+  "id": "0f4c0036-04fb-4409-b2c6-7163a59f6b7d",
+  "impression": "81f46c34-a4bb-469c-8708-f8127cd67d27",
+  "timestamp": "1599391467000",
+  "user": "user1",
+  "session": "session1",
+  "type": "purchase",
+  "item": "item1",
+  "fields": [
+    {"name": "count", "value": 1},
+    {"name": "shipping", "value": "DHL"}
+  ],
+}					</code></pre>
+					<ul>
+						<li class="fragment">Multiple interaction types: clicks/carts/purchases</li>
+						<li class="fragment">Must include reference to a parent ranking event</li>
+					</ul>
+				</section>
+				<section>
+					<p>Demo: ranklens dataset</p>
+				</section>
+				<section>
+					<h2><strike>No-code</strike> YAML feature setup</h2>
+					<p>Goal: cover 90% most common ML features</p>
+					<img src="img/lego.png" height="200px">
+					<ul>
+						<li><b>feature extractors</b>: compute ML feature value</li>
+						<li><b>feature store</b>: add to changelog if changed</li>
+						<li><b>online serving</b>: cache latest value for inference</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Feature extractors: basic</h2>
+					<pre class="yaml"><code data-noescape style="max-height: 800px;">
+// take a value from item metadata
+- name: price
+  type: number
+  scope: item
+  source: item.budget
+  ttl: 60 days
+  				</code></pre>
+  			</section>
+				<section>
+					<h2>Feature extractors: basic</h2>
+					<pre  class="yaml"><code data-noescape style="max-height: 800px;">
+// one-hot/label encode a string
+- name: color
+  type: string
+  scope: item
+  source: item.genre
+  values:
+  - comedy
+  - drama
+  - action
+					</code></pre>
+				</section>
+
+				<section>
+				<h2>Special transformations</h2>
+					<pre class="yaml"><code data-noescape  style="max-height: 800px;">
+// index encode mobile/desktop/tablet category 
+// from User-Agent field
+
+- name: platform
+  type: ua
+  field: platform
+  source: ranking.ua
+					</code></pre>
+					<ul><li>There should be a User-Agent field present in ranking event</li></ul>
+				</section>
+				<section>
+				<h2>Counters</h2>
+					<pre class="yaml"><code data-noescape  style="max-height: 800px;">
+// count how many clicks were done on a product
+
+- name: click_count
+  type: interaction_count
+  scope: item
+  interaction: click
+					</code></pre>
+					<ul class="fragment"><li>Uh-oh, there shouldn't be a global counter!</li></ul>
+				</section>
+				<section>
+					<h2>More counters!</h2>
+					<pre class="yaml"><code data-noescape  style="max-height: 800px;">
+// A sliding window count of interaction events 
+// for a particular item
+
+- name: item_click_count
+  type: window_count
+  interaction: click
+  scope: item
+  bucket_size: 24h         // make a counter for each 24h rolling window
+  windows: [7, 14, 30, 60] // on each refresh, aggregate to 1-2-4-8 week counts
+  refresh: 1h
+					</code></pre>
+				</section>
+				<section>
+				<h2>Per-field matching</h2>
+					<pre class="yaml"><code data-noescape  style="max-height: 800px;">
+- name: title_match
+  type: field_match
+  itemField: item.title 
+  rankingField: ranking.query 
+  method:
+    type: ngram 
+    n: 3					
+          </code></pre>
+          		<ul><li>Lucene language-specific tokenization is supported</li></ul>
+				</section>
+				<section>
+					<p>Demo: ranklens config</p>
+				</section>
+				<section>
+					<p>Demo: import and training the model</p>
+				</section>
+				<section>
+					<h2>What has just happened?</h2>
+					<p><img src="img/replay1.png" height="500px"></p>
+				</section>
+				<section>
+					<h2>What has just happened?</h2>
+					<p><img src="img/replay2.png" height="500px"></p>
+				</section>
+				<section>
+					<h2>What has just happened?</h2>
+					<p><img src="img/replay3.png" height="500px"></p>
+				</section>
+				<section>
+					<h2>What has just happened?</h2>
+					<p><img src="img/ctjoin.png" height="500px"></p>
+				</section>
+				<section>
+					<h2>Implicit judgements</h2>
+					<img src="img/ltr-table.png" height="450px">
+					<ul><li>Feed all of them into LambdaMART</li></ul>
+				</section>
+				<section>
+					<p>Demo: sending requests</p>
+				</section>
+				<section>
+					<h2>[not only] personalization</h2>
+					<ul>
+						<li>Demo: <b>interacted_with</b> dynamic features &rArr; dynamic ranking</li>
+						<li>Pilot: static features &rArr; precomputed ranking</li>
+					</ul>
+					<video class="fragment" data-autoplay src="img/scroll.mp4" height="400px" style="margin-top: 50px;"></video>
+				</section>
+				<section>
+					<h2>[not only] reranking</h2>
+					<p><img src="img/reranking.png" height="350px"/></p>
+					<ul>
+						<li><b>soon:</b> recommendations retrieval</li>
+					</ul>
+				</section>
+				<section>
+					<p><img src="img/cloudnative.png" height="400px"></p>
+					<ul>
+						<li><b>Data collection</b>: event schema, kafka/kinesis/pulsar connectors</li>
+						<li><b>Verification</b>: validation heuristics</li>
+						<li><b>ML Code</b>: LambdaMART now, more later</li>
+						<li><b>Feature extraction</b>: manual &amp; automatic f. engineering</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Cloud-native by design</h2>
+					<p><img src="img/deployment.png" height="400px" style="margin-bottom: -10px;"></p>
+					<ul>
+						<li><b>ops</b>: k8s stateless deployment, up/down scaling</li>
+						<li><b>mlops</b>: ML model retraining, A/B testing</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Current status</h2>
+					<img src="img/alpha.png" height="250px">
+					<p><a href="https://demo.metarank.ai">https://demo.metarank.ai</a></p>
+					<ul>
+						<li>Not MVP: running in prod in pilot projects</li>
+						<li>k8s distributed mode, snowplow integration</li>
+						<li>A long backlog of ML tasks: click models, LTR, de-biasing</li>
+					</ul>
+				</section>
+				<section>
+					<p>We built Metarank to solve our problem.</p>
+					<b>But it may be also useful for you</b>
+					<p><img src="img/pizzacat.jpg" height="200px"></p>
+					<ul>
+						<li><b>Looking for feedback</b>: what should we do next?</li>
+						<li><b>Your unique use-case</b>: what are we doing wrong?</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Metarank</h2>
+					<p><img src="img/metarank-logo.svg" height="100px"></p>
+					<ul>
+						<li><a href="https://github.com/metarank/metarank">github.com/metarank/metarank</a></li>
+						<li><a href="https://metarank.ai/slack">metarank.ai/slack</a></li>
+						<li><a href="https://linkedin.com/in/romangrebennikov/">linkedin.com/in/romangrebennikov/</a><br>
+							<a href="https://linkedin.com/in/vgoloviznin/">linkedin.com/in/vgoloviznin/</a></li>
+					</ul>
+				</section>
+				<section>
+					<img src="img/github-star.png">
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+                history: true,
+                controls: true,
+                progress: true,
+                width: 1200,
+                transition: 'none',
+                slideNumber: true,
+
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
